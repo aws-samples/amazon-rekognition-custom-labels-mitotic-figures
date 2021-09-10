@@ -29,7 +29,7 @@ differently.
 Now go to the IAM console. From the left navigation pane, choose **Roles**.
 
 <p align="center">
-  <img src="../images/iam_1.png" alt="Mitotic figures" width="800px"/>
+  <img src="../images/iam_1.png" alt="Mitotic figures" width="400px"/>
 </p>
 
 In the search box, enter the first few letters of the role name you copied from the SageMaker console. Find the
