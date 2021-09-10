@@ -16,6 +16,8 @@ To run this as a self-paced lab, we recommend you start with [Amazon SageMaker S
 
 Your SageMaker Studio role will need to have additional permissions to enable you to call Amazon Rekognition from within Studio. Follow [these instructions](docs/add_role.md) to add the required permissions to the role.
 
+Once you are ready to go, open the [detecting_mitotic_figures.ipynb](detecting_mitotic_figures.ipynb) notebook in SageMaker Studio. Be sure to use an `ml.m5.large` instance to run the kernel. This prevents certain operations from running out of memory.
+
 > **Note**  
 > You are responsible for the cost of the AWS services used while running this workshop. There is no additional cost for using this sample. For full details, see the following pricing pages for each AWS service you will be using in this sample. Prices are subject to change.
 >
