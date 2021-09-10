@@ -1,7 +1,7 @@
 # Detecting mitotic figures with Amazon Rekognition Custom Labels
 
 <p align="center">
-  <img src="images/mitotic_figures.png" alt="Mitotic figures" width="80%"/>
+  <img src="images/mitotic_figures.png" alt="Mitotic figures" width="350px"/>
 </p>
 
 Amazon Rekognition is a machine learning based image and video analysis service that enables developers to build smart applications using computer vision. Developers can quickly take advantage of different APIs to identify objects, people, text, scene and activities in images and videos, as well as inappropriate content.
