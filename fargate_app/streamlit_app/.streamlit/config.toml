@@ -1,0 +1,7 @@
+[server]
+enableCORS=false
+headless=true
+[browser]
+serverAddress='0.0.0.0'
+gatherUsageStats=false
+
