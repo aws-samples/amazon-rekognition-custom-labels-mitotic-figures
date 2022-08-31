@@ -35,7 +35,11 @@ class RekWsiStack(Stack):
         )
 
         ecs_container_image = ecs.ContainerImage.from_ecr_repository(
-            repository=ecr.Repository.from_repository_name(self, 'ECRRepo', 'rek-wsi'),
+            repository=ecr.Repository.from_repository_name(
+                self,
+                'ECRRepo',
+                ssm.StringParameter.value_from_lookup(self, '/rek_wsi/prod/ecr_repo_name')
+            ),
             tag='latest'
         )
 
