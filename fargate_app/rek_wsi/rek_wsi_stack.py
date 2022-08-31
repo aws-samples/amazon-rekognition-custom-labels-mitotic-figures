@@ -1,19 +1,22 @@
-from aws_cdk import core as cdk
-import aws_cdk.aws_codebuild as codebuild
-import aws_cdk.aws_codepipeline as codepipeline
-import aws_cdk.aws_codepipeline_actions as codepipeline_actions
-import aws_cdk.aws_ec2 as ec2
-import aws_cdk.aws_ecr as ecr
-import aws_cdk.aws_ecs as ecs
-import aws_cdk.aws_ecs_patterns as ecs_patterns
-import aws_cdk.aws_iam as iam
-import aws_cdk.aws_ssm as ssm
+from constructs import Construct
+from aws_cdk import (
+    Stack,
+    aws_codebuild as codebuild,
+    aws_codepipeline as codepipeline,
+    aws_codepipeline_actions as codepipeline_actions,
+    aws_ec2 as ec2,
+    aws_ecr as ecr,
+    aws_ecs as ecs,
+    aws_ecs_patterns as ecs_patterns,
+    aws_iam as iam,
+    aws_ssm as ssm,
+)
 
-from aws_cdk.core import SecretValue
+from aws_cdk import SecretValue
 
 
-class RekWsiStack(cdk.Stack):
-    def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
+class RekWsiStack(Stack):
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         #
