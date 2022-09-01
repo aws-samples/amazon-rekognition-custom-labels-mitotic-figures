@@ -130,7 +130,6 @@ class RekWsiStack(Stack):
                     'build': {
                         'commands': [
                             # Build the Docker image
-                            ls
                             'cd fargate_app/streamlit_app && docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .',
                             # Tag the image
                             'docker tag $IMAGE_REPO_NAME:$IMAGE_TAG '
