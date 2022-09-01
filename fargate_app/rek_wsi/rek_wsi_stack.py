@@ -110,7 +110,10 @@ class RekWsiStack(Stack):
         #
         # The build project needs to know the image repository name and the image tag to use,
         # as well as the AWS account ID; we use environment variables to pass these to the job.
+        
         container_name = fargate_service.task_definition.default_container.container_name
+        task_definition_arn = fargate_service.task_definition.task_definition_arn
+        
         build_project = codebuild.PipelineProject(
             self,
             'RekWSIProject',
@@ -149,9 +152,10 @@ class RekWsiStack(Stack):
                             "> imagedefinitions.json",
                             'ls -l',
                             'pwd',
-                            'sed -i s"|REGION_NAME|$AWS_DEFAULT_REGION|g" appspec.yaml',
-                            'sed -i s"|ACCOUNT_ID|$AWS_ACCOUNT_ID|g" appspec.yaml',
-                            'sed -i s"|TASK_NAME|$IMAGE_REPO_NAME|g" appspec.yaml',
+                            f'sed -i s"|TASK_DEFINITION_ARN|{task_definition_arn}|g" appspec.yaml',
+                            # 'sed -i s"|REGION_NAME|$AWS_DEFAULT_REGION|g" appspec.yaml',
+                            # 'sed -i s"|ACCOUNT_ID|$AWS_ACCOUNT_ID|g" appspec.yaml',
+                            # 'sed -i s"|TASK_NAME|$IMAGE_REPO_NAME|g" appspec.yaml',
                             # f'sed -i s"|CONTAINER_NAME|{ecs_container_image.image_name}|g" appspec.yaml',
                             f'sed -i s"|CONTAINER_NAME|{container_name}|g" appspec.yaml',
                             'echo ">>> appspec.yaml ---"',
