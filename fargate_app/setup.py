@@ -7,7 +7,7 @@ with open("README.md") as fp:
 
 setuptools.setup(
     name="rek_wsi",
-    version="0.0.1",
+    version="0.1.0",
 
     description="An empty CDK Python app",
     long_description=long_description,
@@ -18,8 +18,11 @@ setuptools.setup(
     package_dir={"": "rek_wsi"},
     packages=setuptools.find_packages(where="rek_wsi"),
 
-    install_requires=[
-        "aws-cdk.core==1.118.0",
+    stall_requires=[
+         "aws-cdk-lib>=2.0.0",
+         "constructs>=10.0.0",
+         "aws-cdk.aws-codestar-alpha>=2.0.0alpha1",
+         # ...
     ],
 
     python_requires=">=3.6",

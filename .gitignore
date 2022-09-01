@@ -3,3 +3,6 @@ __pycache__
 databases
 rek_slides
 WSI
+.venv
+fargate_app/cdk.context.json
+fargate_app/cdk.out

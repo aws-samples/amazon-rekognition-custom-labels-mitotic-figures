@@ -1,19 +1,22 @@
-from aws_cdk import core as cdk
-import aws_cdk.aws_codebuild as codebuild
-import aws_cdk.aws_codepipeline as codepipeline
-import aws_cdk.aws_codepipeline_actions as codepipeline_actions
-import aws_cdk.aws_ec2 as ec2
-import aws_cdk.aws_ecr as ecr
-import aws_cdk.aws_ecs as ecs
-import aws_cdk.aws_ecs_patterns as ecs_patterns
-import aws_cdk.aws_iam as iam
-import aws_cdk.aws_ssm as ssm
+from constructs import Construct
+from aws_cdk import (
+    Stack,
+    aws_codebuild as codebuild,
+    aws_codepipeline as codepipeline,
+    aws_codepipeline_actions as codepipeline_actions,
+    aws_ec2 as ec2,
+    aws_ecr as ecr,
+    aws_ecs as ecs,
+    aws_ecs_patterns as ecs_patterns,
+    aws_iam as iam,
+    aws_ssm as ssm,
+)
 
-from aws_cdk.core import SecretValue
+from aws_cdk import SecretValue
 
 
-class RekWsiStack(cdk.Stack):
-    def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
+class RekWsiStack(Stack):
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         #
@@ -32,7 +35,11 @@ class RekWsiStack(cdk.Stack):
         )
 
         ecs_container_image = ecs.ContainerImage.from_ecr_repository(
-            repository=ecr.Repository.from_repository_name(self, 'ECRRepo', 'rek-wsi'),
+            repository=ecr.Repository.from_repository_name(
+                self,
+                'ECRRepo',
+                ssm.StringParameter.value_from_lookup(self, '/rek_wsi/prod/ecr_repo_name')
+            ),
             tag='latest'
         )
 
@@ -103,7 +110,10 @@ class RekWsiStack(cdk.Stack):
         #
         # The build project needs to know the image repository name and the image tag to use,
         # as well as the AWS account ID; we use environment variables to pass these to the job.
+        
         container_name = fargate_service.task_definition.default_container.container_name
+        task_definition_arn = fargate_service.task_definition.task_definition_arn
+        
         build_project = codebuild.PipelineProject(
             self,
             'RekWSIProject',
@@ -123,7 +133,7 @@ class RekWsiStack(cdk.Stack):
                     'build': {
                         'commands': [
                             # Build the Docker image
-                            'cd streamlit_app && docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .',
+                            'cd fargate_app/streamlit_app && docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .',
                             # Tag the image
                             'docker tag $IMAGE_REPO_NAME:$IMAGE_TAG '
                             '$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG',
@@ -135,17 +145,12 @@ class RekWsiStack(cdk.Stack):
                             'docker push '
                             '$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG',
                             # Generate imagedefinitions.json
-                            'cd ..',
+                            'cd ../..',
                             "printf '[{\"name\":\"%s\",\"imageUri\":\"%s\"}]' "
                             f"{container_name} "
                             "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG "
                             "> imagedefinitions.json",
-                            'ls -l',
-                            'pwd',
-                            'sed -i s"|REGION_NAME|$AWS_DEFAULT_REGION|g" appspec.yaml',
-                            'sed -i s"|ACCOUNT_ID|$AWS_ACCOUNT_ID|g" appspec.yaml',
-                            'sed -i s"|TASK_NAME|$IMAGE_REPO_NAME|g" appspec.yaml',
-                            # f'sed -i s"|CONTAINER_NAME|{ecs_container_image.image_name}|g" appspec.yaml',
+                            f'sed -i s"|TASK_DEFINITION_ARN|{task_definition_arn}|g" appspec.yaml',
                             f'sed -i s"|CONTAINER_NAME|{container_name}|g" appspec.yaml',
                             'echo ">>> appspec.yaml ---"',
                             'cat appspec.yaml',
