@@ -150,13 +150,7 @@ class RekWsiStack(Stack):
                             f"{container_name} "
                             "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG "
                             "> imagedefinitions.json",
-                            'ls -l',
-                            'pwd',
                             f'sed -i s"|TASK_DEFINITION_ARN|{task_definition_arn}|g" appspec.yaml',
-                            # 'sed -i s"|REGION_NAME|$AWS_DEFAULT_REGION|g" appspec.yaml',
-                            # 'sed -i s"|ACCOUNT_ID|$AWS_ACCOUNT_ID|g" appspec.yaml',
-                            # 'sed -i s"|TASK_NAME|$IMAGE_REPO_NAME|g" appspec.yaml',
-                            # f'sed -i s"|CONTAINER_NAME|{ecs_container_image.image_name}|g" appspec.yaml',
                             f'sed -i s"|CONTAINER_NAME|{container_name}|g" appspec.yaml',
                             'echo ">>> appspec.yaml ---"',
                             'cat appspec.yaml',
