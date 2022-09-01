@@ -4,8 +4,7 @@ from rek_wsi.rek_wsi_stack import RekWsiStack
 
 
 app = App()
-# env = core.Environment(account='<YOUR_AWS_ACCOUNT_ID>', region='<YOUR_AWS_REGION>')
-env = Environment(account='038821543405', region='eu-west-1')
+env = core.Environment(account='<YOUR_AWS_ACCOUNT_ID>', region='<YOUR_AWS_REGION>')
 RekWsiStack(app, "RekWsiStack", env=env)
 
 app.synth()
