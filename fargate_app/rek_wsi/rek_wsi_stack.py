@@ -49,7 +49,7 @@ class RekWsiStack(Stack):
             self, 'RekWSIECSApp',
             cluster=cluster,
             cpu=256,
-            memory_limit_mib=512,
+            memory_limit_mib=1024,
             desired_count=1,
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs_container_image,
