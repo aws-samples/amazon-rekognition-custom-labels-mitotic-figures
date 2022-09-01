@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:REGION_NAME:ACCOUNT_ID:task-definition/ecs-demo-task-definition:revision-number"
+        LoadBalancerInfo:
+          ContainerName: "CONTAINER_NAME"
+          ContainerPort: your-container-port
