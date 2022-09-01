@@ -130,7 +130,7 @@ class RekWsiStack(Stack):
                     'build': {
                         'commands': [
                             # Build the Docker image
-                            'cd streamlit_app && docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .',
+                            'cd fargate_app/streamlit_app && docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .',
                             # Tag the image
                             'docker tag $IMAGE_REPO_NAME:$IMAGE_TAG '
                             '$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG',
